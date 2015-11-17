@@ -53,7 +53,7 @@ boolean arrayEquals(char a[4],char b[4]){
   int isequal = true;
   int sample1;
   int sample2;
-  for(int i = 0;i<sizeof(a);i++){
+  for(int i = 0;i<(sizeof(a))+2;i++){
     sample1 = a[i];
     sample2 = b[i];
     if(sample1 != sample2){isequal=false;}
@@ -86,19 +86,19 @@ void loop()
       flags[0] = 0; //Command mode off
       Serial.print("Sequence Recieved: ");
       Serial.println(command);
-      if(arrayEquals(command,command_diag)){Serial.println("Diagnostic Readout...");}
+      if(arrayEquals(command,command_diag)){
+      Serial.println("Diagnostic Readout...");
+      }  
       if(arrayEquals(command,command_log)){
         if(flags[1]){
           Serial.println("Log mode off");
           flags[1] = 0;
         }
         else{
-         Serial.println("Log mode on");
+        Serial.println("Log mode on");
         flags[1] = 1; 
         }
       }
-      
-      
       char command[4] = {0,0,0,0};
       command_index = 0; 
     }
