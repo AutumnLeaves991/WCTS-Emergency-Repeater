@@ -4,10 +4,10 @@
 int sensorPin = A0;
 int led = 13;
 
-int flags[5] = {0,0,0,0,0};
+int flags[5] = {0,0,1,0,0};
 // 0 - Star Recieved / Command Mode on
 // 1 - Log Mode On
-// 2 -
+// 2 - Transmit mode On
 // 3 -
 // 4 -
 // 5 - 
@@ -15,10 +15,13 @@ int flags[5] = {0,0,0,0,0};
 char command[4];
 char command_diag[4] = {'0','0','0','0'}; //Reads out diagnostic info
 char command_log[4]  = {'0','0','0','1'}; //Turns log mode on/off
+char command_txE[4]  = {'0','0','0','2'}; //Enables / Disables transmitting
+
+
 /*char command_beep[4] = {'0','0','0','0'}; //
 char command_beep[4] = {'0','0','0','0'}; //
 char command_beep[4] = {'0','0','0','0'}; //
-char command_beep[4] = {'0','0','0','0'}; //
+char command_beep[4] = {'0','0','0','0'}; //   
 */
 
 int command_index = 0;
@@ -99,6 +102,17 @@ void loop()
         flags[1] = 1; 
         }
       }
+      if(arrayEquals(command,command_txE)){
+        if(flags[2]){
+          Serial.println("Transmit mode OFF");
+          flags[2] = 0;
+        }
+        else{
+          Serial.println("Transmit mode ON");
+         flags[2] = 1; 
+        }
+      }
+
       char command[4] = {0,0,0,0};
       command_index = 0; 
     }
