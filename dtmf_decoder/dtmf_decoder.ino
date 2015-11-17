@@ -6,13 +6,21 @@ int led = 13;
 
 int flags[5] = {0,0,0,0,0};
 // 0 - Star Recieved / Command Mode on
-// 1 - 
+// 1 - Log Mode On
 // 2 -
 // 3 -
 // 4 -
 // 5 - 
 
 char command[4];
+char command_diag[4] = {'0','0','0','0'}; //Reads out diagnostic info
+char command_log[4]  = {'0','0','0','1'}; //Turns log mode on/off
+/*char command_beep[4] = {'0','0','0','0'}; //
+char command_beep[4] = {'0','0','0','0'}; //
+char command_beep[4] = {'0','0','0','0'}; //
+char command_beep[4] = {'0','0','0','0'}; //
+*/
+
 int command_index = 0;
 
 
@@ -41,7 +49,7 @@ void Beep(int n){
   }
 }
 
-int arrayEquals(char a[4],char b[4];){
+boolean arrayEquals(char a[4],char b[4]){
   int isequal = true;
   int sample1;
   int sample2;
@@ -50,7 +58,7 @@ int arrayEquals(char a[4],char b[4];){
     sample2 = b[i];
     if(sample1 != sample2){isequal=false;}
   } 
-  return isequal
+  return isequal;
 }
 
 
@@ -78,7 +86,19 @@ void loop()
       flags[0] = 0; //Command mode off
       Serial.print("Sequence Recieved: ");
       Serial.println(command);
-      if(arrayEquals(command,"9009")){Beep(10);}
+      if(arrayEquals(command,command_diag)){Serial.println("Diagnostic Readout...");}
+      if(arrayEquals(command,command_log)){
+        if(flags[1]){
+          Serial.println("Log mode off");
+          flags[1] = 0;
+        }
+        else{
+         Serial.println("Log mode on");
+        flags[1] = 1; 
+        }
+      }
+      
+      
       char command[4] = {0,0,0,0};
       command_index = 0; 
     }
